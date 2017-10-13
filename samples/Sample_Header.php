@@ -87,13 +87,21 @@ if ($handle = opendir('.')) {
         if (preg_match('/^Sample_\d+_/', $file)) {
             $name = str_replace('_', ' ', preg_replace('/(Sample_|\.php)/', '', $file));
             $group = substr($name, 0, 1);
+            $id = substr($name, 0, 2);
             if (!isset($files[$group])) {
-                $files[$group] = '';
+                $files[$group] = array();
             }
-            $files[$group] .= "<li><a href='{$file}'>{$name}</a></li>";
+            if (!isset($files[$group][$id])) {
+                $files[$group][$id] = '';
+            }
+            $files[$group][$id] .= "<li><a href='{$file}'>{$name}</a></li>";
+            ksort($files[$group]);
         }
     }
     closedir($handle);
+    foreach ($files as $keyGroup => $arrayGroup) {
+        $files[$keyGroup] = implode('', $arrayGroup);
+    }
 }
 
 /**
@@ -183,7 +191,7 @@ function createTemplatedSlide(PhpOffice\PhpPresentation\PhpPresentation $objPHPP
     $shape = $slide->createDrawingShape();
     $shape->setName('PHPPresentation logo')
         ->setDescription('PHPPresentation logo')
-        ->setPath('./resources/phppowerpoint_logo.gif')
+        ->setPath(__DIR__ . '/resources/phppowerpoint_logo.gif')
         ->setHeight(36)
         ->setOffsetX(10)
         ->setOffsetY(10);
