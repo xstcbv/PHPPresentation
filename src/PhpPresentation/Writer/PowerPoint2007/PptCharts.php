@@ -2471,6 +2471,64 @@ class PptCharts extends AbstractDecoratorWriter
         // ##c:spPr
         $objWriter->endElement();
 
+        // c:txPr
+        $objWriter->startElement('c:txPr');
+
+        // a:bodyPr
+        $objWriter->writeElement('a:bodyPr', null);
+
+        // a:lstStyle
+        $objWriter->writeElement('a:lstStyle', null);
+
+        // a:p
+        $objWriter->startElement('a:p');
+
+        // a:pPr
+        $objWriter->startElement('a:pPr');
+        $objWriter->writeAttribute('algn', $oAxis->getAlignment()->getHorizontal());
+        $objWriter->writeAttribute('fontAlgn', $oAxis->getAlignment()->getVertical());
+        $objWriter->writeAttribute('marL', CommonDrawing::pixelsToEmu($oAxis->getAlignment()->getMarginLeft()));
+        $objWriter->writeAttribute('marR', CommonDrawing::pixelsToEmu($oAxis->getAlignment()->getMarginRight()));
+        $objWriter->writeAttribute('indent', CommonDrawing::pixelsToEmu($oAxis->getAlignment()->getIndent()));
+        $objWriter->writeAttribute('lvl', $oAxis->getAlignment()->getLevel());
+
+        // a:defRPr
+        $objWriter->startElement('a:defRPr');
+
+        $objWriter->writeAttribute('b', ($oAxis->getFont()->isBold() ? 'true' : 'false'));
+        $objWriter->writeAttribute('i', ($oAxis->getFont()->isItalic() ? 'true' : 'false'));
+        $objWriter->writeAttribute('strike', ($oAxis->getFont()->isStrikethrough() ? 'sngStrike' : 'noStrike'));
+        $objWriter->writeAttribute('sz', ($oAxis->getFont()->getSize() * 100));
+        $objWriter->writeAttribute('u', $oAxis->getFont()->getUnderline());
+        $objWriter->writeAttributeIf($oAxis->getFont()->isSuperScript(), 'baseline', '300000');
+        $objWriter->writeAttributeIf($oAxis->getFont()->isSubScript(), 'baseline', '-250000');
+
+        // Font - a:solidFill
+        $objWriter->startElement('a:solidFill');
+
+        $this->writeColor($objWriter, $oAxis->getFont()->getColor());
+
+        $objWriter->endElement();
+
+        // Font - a:latin
+        $objWriter->startElement('a:latin');
+        $objWriter->writeAttribute('typeface', $oAxis->getFont()->getName());
+        $objWriter->endElement();
+
+        $objWriter->endElement();
+
+        $objWriter->endElement();
+
+        // a:endParaRPr
+        $objWriter->startElement('a:endParaRPr');
+        $objWriter->writeAttribute('lang', 'en-US');
+        $objWriter->writeAttribute('dirty', '0');
+        $objWriter->endElement();
+
+        $objWriter->endElement();
+
+        $objWriter->endElement();
+
         // c:crossAx
         $objWriter->startElement('c:crossAx');
         $objWriter->writeAttribute('val', $crossAxVal);
