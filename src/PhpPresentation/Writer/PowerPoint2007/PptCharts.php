@@ -2485,12 +2485,6 @@ class PptCharts extends AbstractDecoratorWriter
 
         // a:pPr
         $objWriter->startElement('a:pPr');
-        $objWriter->writeAttribute('algn', $oAxis->getAlignment()->getHorizontal());
-        $objWriter->writeAttribute('fontAlgn', $oAxis->getAlignment()->getVertical());
-        $objWriter->writeAttribute('marL', CommonDrawing::pixelsToEmu($oAxis->getAlignment()->getMarginLeft()));
-        $objWriter->writeAttribute('marR', CommonDrawing::pixelsToEmu($oAxis->getAlignment()->getMarginRight()));
-        $objWriter->writeAttribute('indent', CommonDrawing::pixelsToEmu($oAxis->getAlignment()->getIndent()));
-        $objWriter->writeAttribute('lvl', $oAxis->getAlignment()->getLevel());
 
         // a:defRPr
         $objWriter->startElement('a:defRPr');
