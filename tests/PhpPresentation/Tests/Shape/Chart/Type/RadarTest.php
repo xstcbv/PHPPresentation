@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of PHPPresentation - A pure PHP library for reading and writing
  * presentations documents.
@@ -12,7 +13,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -33,6 +33,6 @@ class RadarTest extends TestCase
         $object = new Radar();
         $object->addSeries($series);
 
-        $this->assertEquals(md5($series->getHashCode() . get_class($object)), $object->getHashCode());
+        self::assertEquals(md5($series->getHashCode() . get_class($object)), $object->getHashCode());
     }
 }

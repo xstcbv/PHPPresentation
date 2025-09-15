@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of PHPPresentation - A pure PHP library for reading and writing
  * presentations documents.
@@ -12,7 +13,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -20,62 +20,17 @@ declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Shape;
 
-use ArrayObject;
 use PhpOffice\PhpPresentation\AbstractShape;
-use PhpOffice\PhpPresentation\GeometryCalculator;
 use PhpOffice\PhpPresentation\ShapeContainerInterface;
+use PhpOffice\PhpPresentation\Traits\ShapeCollection;
 
 class Group extends AbstractShape implements ShapeContainerInterface
 {
-    /**
-     * Collection of shapes.
-     *
-     * @var array<int, AbstractShape>|ArrayObject<int, AbstractShape>
-     */
-    private $shapeCollection;
-
-    /**
-     * Extent X.
-     *
-     * @var int
-     */
-    protected $extentX;
-
-    /**
-     * Extent Y.
-     *
-     * @var int
-     */
-    protected $extentY;
+    use ShapeCollection;
 
     public function __construct()
     {
         parent::__construct();
-
-        // Shape collection
-        $this->shapeCollection = new ArrayObject();
-    }
-
-    /**
-     * Get collection of shapes.
-     *
-     * @return array<int, AbstractShape>|ArrayObject<int, AbstractShape>
-     */
-    public function getShapeCollection()
-    {
-        return $this->shapeCollection;
-    }
-
-    /**
-     * Add shape to slide.
-     *
-     * @return AbstractShape
-     */
-    public function addShape(AbstractShape $shape): AbstractShape
-    {
-        $shape->setContainer($this);
-
-        return $shape;
     }
 
     /**
@@ -83,22 +38,33 @@ class Group extends AbstractShape implements ShapeContainerInterface
      */
     public function getOffsetX(): int
     {
-        if (empty($this->offsetX)) {
-            $offsets = GeometryCalculator::calculateOffsets($this);
-            $this->offsetX = $offsets[GeometryCalculator::X];
-            $this->offsetY = $offsets[GeometryCalculator::Y];
+        $offsetX = null;
+
+        foreach ($this->getShapeCollection() as $shape) {
+            if ($offsetX === null) {
+                $offsetX = $shape->getOffsetX();
+            } else {
+                $offsetX = \min($offsetX, $shape->getOffsetX());
+            }
         }
 
-        return $this->offsetX;
+        return $offsetX ?? 0;
     }
 
     /**
-     * Ignores setting the X Offset, preserving the default behavior.
+     * Change the X offset by moving all contained shapes.
      *
      * @return $this
      */
-    public function setOffsetX(int $pValue = 0)
+    public function setOffsetX(int $pValue = 0): self
     {
+        $offsetX = $this->getOffsetX();
+        $diff = $pValue - $offsetX;
+
+        foreach ($this->getShapeCollection() as $shape) {
+            $shape->setOffsetX($shape->getOffsetX() + $diff);
+        }
+
         return $this;
     }
 
@@ -107,22 +73,33 @@ class Group extends AbstractShape implements ShapeContainerInterface
      */
     public function getOffsetY(): int
     {
-        if (empty($this->offsetY)) {
-            $offsets = GeometryCalculator::calculateOffsets($this);
-            $this->offsetX = $offsets[GeometryCalculator::X];
-            $this->offsetY = $offsets[GeometryCalculator::Y];
+        $offsetY = null;
+
+        foreach ($this->getShapeCollection() as $shape) {
+            if ($offsetY === null) {
+                $offsetY = $shape->getOffsetY();
+            } else {
+                $offsetY = \min($offsetY, $shape->getOffsetY());
+            }
         }
 
-        return $this->offsetY;
+        return $offsetY ?? 0;
     }
 
     /**
-     * Ignores setting the Y Offset, preserving the default behavior.
+     * Change the Y offset by moving all contained shapes.
      *
      * @return $this
      */
-    public function setOffsetY(int $pValue = 0)
+    public function setOffsetY(int $pValue = 0): self
     {
+        $offsetY = $this->getOffsetY();
+        $diff = $pValue - $offsetY;
+
+        foreach ($this->getShapeCollection() as $shape) {
+            $shape->setOffsetY($shape->getOffsetY() + $diff);
+        }
+
         return $this;
     }
 
@@ -131,13 +108,13 @@ class Group extends AbstractShape implements ShapeContainerInterface
      */
     public function getExtentX(): int
     {
-        if (null === $this->extentX) {
-            $extents = GeometryCalculator::calculateExtents($this);
-            $this->extentX = $extents[GeometryCalculator::X] - $this->getOffsetX();
-            $this->extentY = $extents[GeometryCalculator::Y] - $this->getOffsetY();
+        $extentX = 0;
+
+        foreach ($this->getShapeCollection() as $shape) {
+            $extentX = \max($extentX, $shape->getOffsetX() + $shape->getWidth());
         }
 
-        return $this->extentX;
+        return $extentX - $this->getOffsetX();
     }
 
     /**
@@ -145,21 +122,37 @@ class Group extends AbstractShape implements ShapeContainerInterface
      */
     public function getExtentY(): int
     {
-        if (null === $this->extentY) {
-            $extents = GeometryCalculator::calculateExtents($this);
-            $this->extentX = $extents[GeometryCalculator::X] - $this->getOffsetX();
-            $this->extentY = $extents[GeometryCalculator::Y] - $this->getOffsetY();
+        $extentY = 0;
+
+        foreach ($this->getShapeCollection() as $shape) {
+            $extentY = \max($extentY, $shape->getOffsetY() + $shape->getHeight());
         }
 
-        return $this->extentY;
+        return $extentY - $this->getOffsetY();
+    }
+
+    /**
+     * Calculate the width based on the size/position of the contained shapes.
+     */
+    public function getWidth(): int
+    {
+        return $this->getExtentX();
+    }
+
+    /**
+     * Calculate the height based on the size/position of the contained shapes.
+     */
+    public function getHeight(): int
+    {
+        return $this->getExtentY();
     }
 
     /**
      * Ignores setting the width, preserving the default behavior.
      *
-     * @return self
+     * @return $this
      */
-    public function setWidth(int $pValue = 0)
+    public function setWidth(int $pValue = 0): self
     {
         return $this;
     }
@@ -169,15 +162,13 @@ class Group extends AbstractShape implements ShapeContainerInterface
      *
      * @return $this
      */
-    public function setHeight(int $pValue = 0)
+    public function setHeight(int $pValue = 0): self
     {
         return $this;
     }
 
     /**
      * Create rich text shape.
-     *
-     * @return RichText
      */
     public function createRichTextShape(): RichText
     {
@@ -194,8 +185,6 @@ class Group extends AbstractShape implements ShapeContainerInterface
      * @param int $fromY Starting point y offset
      * @param int $toX Ending point x offset
      * @param int $toY Ending point y offset
-     *
-     * @return Line
      */
     public function createLineShape(int $fromX, int $fromY, int $toX, int $toY): Line
     {
@@ -206,9 +195,18 @@ class Group extends AbstractShape implements ShapeContainerInterface
     }
 
     /**
+     * Create geometric shape.
+     */
+    public function createAutoShape(): AutoShape
+    {
+        $shape = new AutoShape();
+        $this->addShape($shape);
+
+        return $shape;
+    }
+
+    /**
      * Create chart shape.
-     *
-     * @return Chart
      */
     public function createChartShape(): Chart
     {
@@ -220,8 +218,6 @@ class Group extends AbstractShape implements ShapeContainerInterface
 
     /**
      * Create drawing shape.
-     *
-     * @return Drawing\File
      */
     public function createDrawingShape(): Drawing\File
     {
@@ -235,8 +231,6 @@ class Group extends AbstractShape implements ShapeContainerInterface
      * Create table shape.
      *
      * @param int $columns Number of columns
-     *
-     * @return Table
      */
     public function createTableShape(int $columns = 1): Table
     {

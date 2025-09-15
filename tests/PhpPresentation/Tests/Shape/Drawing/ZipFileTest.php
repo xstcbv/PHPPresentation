@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of PHPPresentation - A pure PHP library for reading and writing
  * presentations documents.
@@ -12,7 +13,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -72,13 +72,13 @@ class ZipFileTest extends TestCase
     {
         $oDrawing = new ZipFile();
         $oDrawing->setPath($this->fileOk);
-        $this->assertEquals('gif', $oDrawing->getExtension());
+        self::assertEquals('gif', $oDrawing->getExtension());
     }
 
     public function testMimeType(): void
     {
         $oDrawing = new ZipFile();
         $oDrawing->setPath($this->fileOk);
-        $this->assertEquals('image/gif', $oDrawing->getMimeType());
+        self::assertEquals('image/gif', $oDrawing->getMimeType());
     }
 }

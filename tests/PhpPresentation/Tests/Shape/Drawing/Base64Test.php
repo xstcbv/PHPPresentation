@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of PHPPresentation - A pure PHP library for reading and writing
  * presentations documents.
@@ -12,7 +13,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -50,16 +50,16 @@ class Base64Test extends TestCase
     {
         $oDrawing = new Base64();
 
-        $this->assertEmpty($oDrawing->getData());
+        self::assertEmpty($oDrawing->getData());
         $oDrawing->setData($this->imageDataPNG);
-        $this->assertNotEmpty($oDrawing->getData());
+        self::assertNotEmpty($oDrawing->getData());
     }
 
     public function testExtension(): void
     {
         $oDrawing = new Base64();
         $oDrawing->setData($this->imageDataPNG);
-        $this->assertEquals('jpg', $oDrawing->getExtension());
+        self::assertEquals('jpg', $oDrawing->getExtension());
     }
 
     public function testExtensionException(): void
@@ -78,20 +78,20 @@ class Base64Test extends TestCase
     {
         $oDrawing = new Base64();
         $oDrawing->setData($this->imageDataPNG);
-        $this->assertEquals('image/jpeg', $oDrawing->getMimeType());
+        self::assertEquals('image/jpeg', $oDrawing->getMimeType());
     }
 
     public function testMimeTypeSVG(): void
     {
         $oDrawing = new Base64();
         $oDrawing->setData($this->imageDataSVG);
-        $this->assertEquals('image/svg+xml', $oDrawing->getMimeType());
+        self::assertEquals('image/svg+xml', $oDrawing->getMimeType());
     }
 
     public function testMimeTypeFunctionNotExists(): void
     {
         $oDrawing = new Base64();
         $oDrawing->setData($this->imageDataPNG);
-        $this->assertEquals('image/jpeg', $oDrawing->getMimeType());
+        self::assertEquals('image/jpeg', $oDrawing->getMimeType());
     }
 }

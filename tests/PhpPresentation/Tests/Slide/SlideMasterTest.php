@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of PHPPresentation - A pure PHP library for reading and writing
  * presentations documents.
@@ -12,7 +13,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -37,15 +37,15 @@ class SlideMasterTest extends TestCase
     public function testBase(): void
     {
         $object = new SlideMaster();
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\AbstractSlide', $object);
-        $this->assertNull($object->getParent());
-        $this->assertInstanceOf('\\ArrayObject', $object->getShapeCollection());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\ColorMap', $object->colorMap);
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\AbstractSlide', $object);
+        self::assertNull($object->getParent());
+        self::assertIsArray($object->getShapeCollection());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\ColorMap', $object->colorMap);
         /** @var Color $background */
         $background = $object->getBackground();
-        $this->assertInstanceOf(Color::class, $background);
-        $this->assertEquals('FFFFFF', $background->getColor()->getRGB());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\TextStyle', $object->getTextStyles());
+        self::assertInstanceOf(Color::class, $background);
+        self::assertEquals('FFFFFF', $background->getColor()->getRGB());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\TextStyle', $object->getTextStyles());
     }
 
     public function testLayout(): void
@@ -53,49 +53,73 @@ class SlideMasterTest extends TestCase
         $object = new SlideMaster();
 
         // Mock Post
-        /** @var SlideLayout $mockSlideLayout */
-        $mockSlideLayout = $this->getMockForAbstractClass(SlideLayout::class, [$object]);
+        if (method_exists($this, 'getMockForAbstractClass')) {
+            /** @var SlideLayout $mockSlideLayout */
+            $mockSlideLayout = $this->getMockForAbstractClass(SlideLayout::class, [$object]);
+        } else {
+            /** @var SlideLayout $mockSlideLayout */
+            $mockSlideLayout = new class($object) extends SlideLayout {
+            };
+        }
 
-        $this->assertEmpty($object->getAllSlideLayouts());
-        $this->assertInstanceOf(SlideLayout::class, $object->createSlideLayout());
-        $this->assertInstanceOf(SlideLayout::class, $object->addSlideLayout($mockSlideLayout));
-        $this->assertCount(2, $object->getAllSlideLayouts());
+        self::assertEmpty($object->getAllSlideLayouts());
+        self::assertInstanceOf(SlideLayout::class, $object->createSlideLayout());
+        self::assertInstanceOf(SlideLayout::class, $object->addSlideLayout($mockSlideLayout));
+        self::assertCount(2, $object->getAllSlideLayouts());
     }
 
     public function testSchemeColors(): void
     {
         // Mock Pre
-        /** @var SchemeColor $mockSchemeColorAccent1 */
-        $mockSchemeColorAccent1 = $this->getMockForAbstractClass(SchemeColor::class);
+        if (method_exists($this, 'getMockForAbstractClass')) {
+            /** @var SchemeColor $mockSchemeColorAccent1 */
+            $mockSchemeColorAccent1 = $this->getMockForAbstractClass(SchemeColor::class);
+        } else {
+            /** @var SchemeColor $mockSchemeColorAccent1 */
+            $mockSchemeColorAccent1 = new class() extends SchemeColor {
+            };
+        }
         $mockSchemeColorAccent1->setValue('accent1');
         $mockSchemeColorAccent1->setRGB('ABCDEF');
-        /** @var SchemeColor $mockSchemeColorNew */
-        $mockSchemeColorNew = $this->getMockForAbstractClass(SchemeColor::class);
+        if (method_exists($this, 'getMockForAbstractClass')) {
+            /** @var SchemeColor $mockSchemeColorNew */
+            $mockSchemeColorNew = $this->getMockForAbstractClass(SchemeColor::class);
+        } else {
+            /** @var SchemeColor $mockSchemeColorNew */
+            $mockSchemeColorNew = new class() extends SchemeColor {
+            };
+        }
         $mockSchemeColorNew->setValue('new');
         $mockSchemeColorNew->setRGB('ABCDEF');
 
         $object = new SlideMaster();
 
-        $this->assertIsArray($object->getAllSchemeColors());
-        $this->assertCount(12, $object->getAllSchemeColors());
+        self::assertIsArray($object->getAllSchemeColors());
+        self::assertCount(12, $object->getAllSchemeColors());
         // Add idem value
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\SlideMaster', $object->addSchemeColor($mockSchemeColorAccent1));
-        $this->assertCount(12, $object->getAllSchemeColors());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\SlideMaster', $object->addSchemeColor($mockSchemeColorAccent1));
+        self::assertCount(12, $object->getAllSchemeColors());
         // Add new value
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\SlideMaster', $object->addSchemeColor($mockSchemeColorNew));
-        $this->assertCount(13, $object->getAllSchemeColors());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\SlideMaster', $object->addSchemeColor($mockSchemeColorNew));
+        self::assertCount(13, $object->getAllSchemeColors());
     }
 
     public function testTextStyles(): void
     {
         // Mock Pre
-        /** @var TextStyle $mockTextStyle */
-        $mockTextStyle = $this->getMockForAbstractClass(TextStyle::class);
+        if (method_exists($this, 'getMockForAbstractClass')) {
+            /** @var TextStyle $mockTextStyle */
+            $mockTextStyle = $this->getMockForAbstractClass(TextStyle::class);
+        } else {
+            /** @var TextStyle $mockTextStyle */
+            $mockTextStyle = new class() extends TextStyle {
+            };
+        }
 
         $object = new SlideMaster();
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\TextStyle', $object->getTextStyles());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\SlideMaster', $object->setTextStyles($mockTextStyle));
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\TextStyle', $object->getTextStyles());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\TextStyle', $object->getTextStyles());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\SlideMaster', $object->setTextStyles($mockTextStyle));
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\TextStyle', $object->getTextStyles());
     }
 }

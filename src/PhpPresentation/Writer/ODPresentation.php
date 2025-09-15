@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of PHPPresentation - A pure PHP library for reading and writing
  * presentations documents.
@@ -12,7 +13,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -20,7 +20,6 @@ declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Writer;
 
-use DirectoryIterator;
 use PhpOffice\Common\Adapter\Zip\ZipArchiveAdapter;
 use PhpOffice\PhpPresentation\Exception\DirectoryNotFoundException;
 use PhpOffice\PhpPresentation\Exception\FileCopyException;
@@ -55,10 +54,8 @@ class ODPresentation extends AbstractWriter implements WriterInterface
 
     /**
      * Create a new \PhpOffice\PhpPresentation\Writer\ODPresentation.
-     *
-     * @param PhpPresentation $pPhpPresentation
      */
-    public function __construct(PhpPresentation $pPhpPresentation = null)
+    public function __construct(?PhpPresentation $pPhpPresentation = null)
     {
         // Assign PhpPresentation
         $this->setPhpPresentation($pPhpPresentation ?? new PhpPresentation());
@@ -74,10 +71,6 @@ class ODPresentation extends AbstractWriter implements WriterInterface
 
     /**
      * Save PhpPresentation to file.
-     *
-     * @throws FileCopyException
-     * @throws FileRemoveException
-     * @throws InvalidParameterException
      */
     public function save(string $pFilename): void
     {
@@ -87,7 +80,7 @@ class ODPresentation extends AbstractWriter implements WriterInterface
         // If $pFilename is php://output or php://stdout, make it a temporary file...
         $originalFilename = $pFilename;
         if ('php://output' == strtolower($pFilename) || 'php://stdout' == strtolower($pFilename)) {
-            $pFilename = @tempnam('./', 'phppttmp');
+            $pFilename = @tempnam($this->diskCachingDirectory, 'phppttmp');
             if ('' == $pFilename) {
                 $pFilename = $originalFilename;
             }
@@ -104,26 +97,17 @@ class ODPresentation extends AbstractWriter implements WriterInterface
         $oPresentation = $this->getPhpPresentation();
         $arrayChart = [];
 
-        $arrayFiles = [];
-        $oDir = new DirectoryIterator(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'ODPresentation');
-        foreach ($oDir as $oFile) {
-            if (!$oFile->isFile()) {
-                continue;
-            }
-
-            $class = __NAMESPACE__ . '\\ODPresentation\\' . $oFile->getBasename('.php');
-            $class = new \ReflectionClass($class);
-
-            if ($class->isAbstract() || !$class->isSubclassOf('PhpOffice\PhpPresentation\Writer\ODPresentation\AbstractDecoratorWriter')) {
-                continue;
-            }
-            $arrayFiles[$oFile->getBasename('.php')] = $class;
-        }
-
-        ksort($arrayFiles);
-
-        foreach ($arrayFiles as $o) {
-            $oService = $o->newInstance();
+        foreach ([
+            __CLASS__ . '\Mimetype',
+            __CLASS__ . '\Content',
+            __CLASS__ . '\Meta',
+            __CLASS__ . '\MetaInfManifest',
+            __CLASS__ . '\ObjectsChart',
+            __CLASS__ . '\Pictures',
+            __CLASS__ . '\Styles',
+            __CLASS__ . '\ThumbnailsThumbnail',
+        ] as $class) {
+            $oService = new $class();
             $oService->setZip($oZip);
             $oService->setPresentation($oPresentation);
             $oService->setDrawingHashTable($this->getDrawingHashTable());
@@ -160,18 +144,15 @@ class ODPresentation extends AbstractWriter implements WriterInterface
     /**
      * Set use disk caching where possible?
      *
-     * @param bool $pValue
      * @param string $directory Disk caching directory
      *
-     * @throws DirectoryNotFoundException
-     *
-     * @return \PhpOffice\PhpPresentation\Writer\ODPresentation
+     * @return ODPresentation
      */
-    public function setUseDiskCaching(bool $pValue = false, string $directory = null)
+    public function setUseDiskCaching(bool $pValue = false, ?string $directory = null)
     {
         $this->useDiskCaching = $pValue;
 
-        if (!is_null($directory)) {
+        if (null !== $directory) {
             if (!is_dir($directory)) {
                 throw new DirectoryNotFoundException($directory);
             }

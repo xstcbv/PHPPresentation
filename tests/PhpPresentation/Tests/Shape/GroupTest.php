@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of PHPPresentation - A pure PHP library for reading and writing
  * presentations documents.
@@ -12,7 +13,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -35,25 +35,26 @@ class GroupTest extends TestCase
     {
         $object = new Group();
 
-        $this->assertEquals(0, $object->getOffsetX());
-        $this->assertEquals(0, $object->getOffsetY());
-        $this->assertEquals(0, $object->getExtentX());
-        $this->assertEquals(0, $object->getExtentY());
-        $this->assertEquals(0, $object->getShapeCollection()->count());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Group', $object->setWidth(rand(1, 100)));
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Group', $object->setHeight(rand(1, 100)));
+        self::assertEquals(0, $object->getOffsetX());
+        self::assertEquals(0, $object->getOffsetY());
+        self::assertEquals(0, $object->getExtentX());
+        self::assertEquals(0, $object->getExtentY());
+        self::assertCount(0, $object->getShapeCollection());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Group', $object->setWidth(mt_rand(1, 100)));
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Group', $object->setHeight(mt_rand(1, 100)));
     }
 
     public function testAdd(): void
     {
         $object = new Group();
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart', $object->createChartShape());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Drawing\\File', $object->createDrawingShape());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Line', $object->createLineShape(10, 10, 10, 10));
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText', $object->createRichTextShape());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Table', $object->createTableShape());
-        $this->assertEquals(5, $object->getShapeCollection()->count());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\AutoShape', $object->createAutoShape());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart', $object->createChartShape());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Drawing\\File', $object->createDrawingShape());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Line', $object->createLineShape(10, 10, 10, 10));
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText', $object->createRichTextShape());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Table', $object->createTableShape());
+        self::assertCount(6, $object->getShapeCollection());
     }
 
     public function testExtentX(): void
@@ -62,7 +63,7 @@ class GroupTest extends TestCase
         $line1 = new Line(10, 20, 30, 50);
         $object->addShape($line1);
 
-        $this->assertEquals(20, $object->getExtentX());
+        self::assertEquals(20, $object->getExtentX());
     }
 
     public function testExtentY(): void
@@ -71,7 +72,7 @@ class GroupTest extends TestCase
         $line1 = new Line(10, 20, 30, 50);
         $object->addShape($line1);
 
-        $this->assertEquals(30, $object->getExtentY());
+        self::assertEquals(30, $object->getExtentY());
     }
 
     public function testOffsetX(): void
@@ -80,10 +81,10 @@ class GroupTest extends TestCase
         $line1 = new Line(10, 20, 30, 50);
         $object->addShape($line1);
 
-        $this->assertEquals(10, $object->getOffsetX());
+        self::assertEquals($line1->getOffsetX(), $object->getOffsetX());
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Group', $object->setOffsetX(rand(1, 100)));
-        $this->assertEquals(10, $object->getOffsetX());
+        self::assertInstanceOf(Group::class, $object->setOffsetX(mt_rand(1, 100)));
+        self::assertEquals($line1->getOffsetX(), $object->getOffsetX());
     }
 
     public function testOffsetY(): void
@@ -92,10 +93,10 @@ class GroupTest extends TestCase
         $line1 = new Line(10, 20, 30, 50);
         $object->addShape($line1);
 
-        $this->assertEquals(20, $object->getOffsetY());
+        self::assertEquals($line1->getOffsetY(), $object->getOffsetY());
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Group', $object->setOffsetY(rand(1, 100)));
-        $this->assertEquals(20, $object->getOffsetY());
+        self::assertInstanceOf(Group::class, $object->setOffsetY(mt_rand(1, 100)));
+        self::assertEquals($line1->getOffsetY(), $object->getOffsetY());
     }
 
     public function testExtentsAndOffsetsForOneShape(): void
@@ -114,10 +115,10 @@ class GroupTest extends TestCase
         $line1 = new Line($offsetX, $offsetY, $endX, $endY);
         $object->addShape($line1);
 
-        $this->assertEquals($offsetX, $object->getOffsetX());
-        $this->assertEquals($offsetY, $object->getOffsetY());
-        $this->assertEquals($extentX, $object->getExtentX());
-        $this->assertEquals($extentY, $object->getExtentY());
+        self::assertEquals($offsetX, $object->getOffsetX());
+        self::assertEquals($offsetY, $object->getOffsetY());
+        self::assertEquals($extentX, $object->getExtentX());
+        self::assertEquals($extentY, $object->getExtentY());
     }
 
     public function testExtentsAndOffsetsForTwoShapes(): void
@@ -147,9 +148,9 @@ class GroupTest extends TestCase
         $object->addShape($line1);
         $object->addShape($line2);
 
-        $this->assertEquals($offsetX, $object->getOffsetX());
-        $this->assertEquals($offsetY, $object->getOffsetY());
-        $this->assertEquals($extentX, $object->getExtentX());
-        $this->assertEquals($extentY, $object->getExtentY());
+        self::assertEquals($offsetX, $object->getOffsetX());
+        self::assertEquals($offsetY, $object->getOffsetY());
+        self::assertEquals($extentX, $object->getExtentX());
+        self::assertEquals($extentY, $object->getExtentY());
     }
 }

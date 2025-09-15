@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of PHPPresentation - A pure PHP library for reading and writing
  * presentations documents.
@@ -12,7 +13,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -52,10 +52,8 @@ class PowerPoint2007 extends AbstractWriter implements WriterInterface
 
     /**
      * Create a new PowerPoint2007 file.
-     *
-     * @param PhpPresentation $pPhpPresentation
      */
-    public function __construct(PhpPresentation $pPhpPresentation = null)
+    public function __construct(?PhpPresentation $pPhpPresentation = null)
     {
         // Assign PhpPresentation
         $this->setPhpPresentation($pPhpPresentation ?? new PhpPresentation());
@@ -71,10 +69,6 @@ class PowerPoint2007 extends AbstractWriter implements WriterInterface
 
     /**
      * Save PhpPresentation to file.
-     *
-     * @throws FileCopyException
-     * @throws FileRemoveException
-     * @throws InvalidParameterException
      */
     public function save(string $pFilename): void
     {
@@ -86,7 +80,7 @@ class PowerPoint2007 extends AbstractWriter implements WriterInterface
         // If $pFilename is php://output or php://stdout, make it a temporary file...
         $originalFilename = $pFilename;
         if ('php://output' == strtolower($pFilename) || 'php://stdout' == strtolower($pFilename)) {
-            $pFilename = @tempnam('./', 'phppttmp');
+            $pFilename = @tempnam($this->diskCachingDir, 'phppttmp');
             if ('' == $pFilename) {
                 $pFilename = $originalFilename;
             }
@@ -98,7 +92,7 @@ class PowerPoint2007 extends AbstractWriter implements WriterInterface
         $oZip = $this->getZipAdapter();
         $oZip->open($pFilename);
 
-        $oDir = new DirectoryIterator(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'PowerPoint2007');
+        $oDir = new DirectoryIterator(__DIR__ . DIRECTORY_SEPARATOR . 'PowerPoint2007');
         $arrayFiles = [];
         foreach ($oDir as $oFile) {
             if (!$oFile->isFile()) {
@@ -152,18 +146,15 @@ class PowerPoint2007 extends AbstractWriter implements WriterInterface
     /**
      * Set use disk caching where possible?
      *
-     * @param bool $useDiskCaching
      * @param string $directory Disk caching directory
      *
-     * @throws DirectoryNotFoundException
-     *
-     * @return \PhpOffice\PhpPresentation\Writer\PowerPoint2007
+     * @return PowerPoint2007
      */
-    public function setUseDiskCaching(bool $useDiskCaching = false, string $directory = null)
+    public function setUseDiskCaching(bool $useDiskCaching = false, ?string $directory = null)
     {
         $this->useDiskCaching = $useDiskCaching;
 
-        if (!is_null($directory)) {
+        if (null !== $directory) {
             if (!is_dir($directory)) {
                 throw new DirectoryNotFoundException($directory);
             }

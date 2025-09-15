@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of PHPPresentation - A pure PHP library for reading and writing
  * presentations documents.
@@ -12,7 +13,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -33,6 +33,13 @@ class Doughnut extends AbstractTypePie implements ComparableInterface
      * @var int
      */
     protected $holeSize = 50;
+
+    /**
+     * Starting angle of the first slice.
+     *
+     * @var int
+     */
+    private $firstSliceAngle = 0;
 
     /**
      * @return int
@@ -70,5 +77,17 @@ class Doughnut extends AbstractTypePie implements ComparableInterface
     public function getHashCode(): string
     {
         return md5(parent::getHashCode() . __CLASS__);
+    }
+
+    public function setFirstSliceAngle(int $angle): self
+    {
+        $this->firstSliceAngle = (($angle % 360) + 360) % 360;
+
+        return $this;
+    }
+
+    public function getFirstSliceAngle(): int
+    {
+        return $this->firstSliceAngle;
     }
 }

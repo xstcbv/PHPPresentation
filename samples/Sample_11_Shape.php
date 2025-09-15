@@ -7,7 +7,7 @@ use PhpOffice\PhpPresentation\Style\Color;
 
 include_once 'Sample_Header.php';
 
-function fnSlideRichText(PhpPresentation $objPHPPresentation)
+function fnSlideRichText(PhpPresentation $objPHPPresentation): void
 {
     // Create templated slide
     echo date('H:i:s') . ' Create templated slide' . EOL;
@@ -35,7 +35,7 @@ function fnSlideRichText(PhpPresentation $objPHPPresentation)
     $textRun->getFont()->setColor(new Color('FF000000'));
 }
 
-function fnSlideRichTextLineSpacing(PhpPresentation $objPHPPresentation)
+function fnSlideRichTextLineSpacing(PhpPresentation $objPHPPresentation): void
 {
     // Create templated slide
     echo date('H:i:s') . ' Create templated slide' . EOL;
@@ -81,7 +81,26 @@ function fnSlideRichTextLineSpacing(PhpPresentation $objPHPPresentation)
     $shape->createTextRun('Line Spacing 300');
 }
 
-function fnSlideRichTextShadow(PhpPresentation $objPHPPresentation)
+function fnSlideRichTextRotation(PhpPresentation $objPHPPresentation): void
+{
+    // Create templated slide
+    echo date('H:i:s') . ' Create templated slide' . EOL;
+    $currentSlide = createTemplatedSlide($objPHPPresentation);
+
+    // Create a shape (text)
+    echo date('H:i:s') . ' Create a shape (rich text) with rotation' . EOL;
+    $shape = $currentSlide->createRichTextShape();
+    $shape->setHeight(100);
+    $shape->setWidth(200);
+    $shape->setOffsetX(200);
+    $shape->setOffsetY(200);
+    $shape->getActiveParagraph()->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+    $shape->setRotation(90);
+
+    $shape->createTextRun('RichText with rotation');
+}
+
+function fnSlideRichTextShadow(PhpPresentation $objPHPPresentation): void
 {
     // Create templated slide
     echo date('H:i:s') . ' Create templated slide' . EOL;
@@ -101,7 +120,7 @@ function fnSlideRichTextShadow(PhpPresentation $objPHPPresentation)
     $textRun->getFont()->setColor(new Color('FF000000'));
 }
 
-function fnSlideRichTextList(PhpPresentation $objPHPPresentation)
+function fnSlideRichTextList(PhpPresentation $objPHPPresentation): void
 {
     // Create templated slide
     echo date('H:i:s') . ' Create templated slide' . EOL;
@@ -143,11 +162,12 @@ $objPHPPresentation->removeSlideByIndex(0);
 
 fnSlideRichText($objPHPPresentation);
 fnSlideRichTextLineSpacing($objPHPPresentation);
+fnSlideRichTextRotation($objPHPPresentation);
 fnSlideRichTextShadow($objPHPPresentation);
 fnSlideRichTextList($objPHPPresentation);
 
 // Save file
-echo write($objPHPPresentation, basename(__FILE__, '.php'), $writers);
+echo write($objPHPPresentation, basename(__FILE__, '.php'));
 if (!CLI) {
     include_once 'Sample_Footer.php';
 }

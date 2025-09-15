@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of PHPPresentation - A pure PHP library for reading and writing
  * presentations documents.
@@ -12,7 +13,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -39,6 +39,7 @@ class Styles extends AbstractDecoratorWriter
      * @var array<int, string>
      */
     protected $arrayGradient = [];
+
     /**
      * Stores font styles draw:stroke-dash nodes.
      *
@@ -149,8 +150,8 @@ class Styles extends AbstractDecoratorWriter
         $objWriter->writeAttribute('fo:margin-bottom', '0cm');
         $objWriter->writeAttribute('fo:margin-left', '0cm');
         $objWriter->writeAttribute('fo:margin-right', '0cm');
-        $objWriter->writeAttribute('fo:page-width', Text::numberFormat(CommonDrawing::pixelsToCentimeters(CommonDrawing::emuToPixels((int) $this->getPresentation()->getLayout()->getCX())), 1) . 'cm');
-        $objWriter->writeAttribute('fo:page-height', Text::numberFormat(CommonDrawing::pixelsToCentimeters(CommonDrawing::emuToPixels((int) $this->getPresentation()->getLayout()->getCY())), 1) . 'cm');
+        $objWriter->writeAttribute('fo:page-width', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) CommonDrawing::emuToPixels((int) $this->getPresentation()->getLayout()->getCX())), 1) . 'cm');
+        $objWriter->writeAttribute('fo:page-height', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) CommonDrawing::emuToPixels((int) $this->getPresentation()->getLayout()->getCY())), 1) . 'cm');
         $printOrientation = 'portrait';
         if ($this->getPresentation()->getLayout()->getCX() > $this->getPresentation()->getLayout()->getCY()) {
             $printOrientation = 'landscape';
@@ -199,6 +200,7 @@ class Styles extends AbstractDecoratorWriter
                         $objWriter->writeAttribute('draw:distance', '0.105cm');
                         $objWriter->writeAttribute('draw:dots2', '1');
                         $objWriter->writeAttribute('draw:dots2-length', '0.14cm');
+
                         break;
                     case Border::DASH_DASHDOT:
                         $objWriter->writeAttribute('draw:distance', '0.105cm');
@@ -206,16 +208,19 @@ class Styles extends AbstractDecoratorWriter
                         $objWriter->writeAttribute('draw:dots1-length', '0.035cm');
                         $objWriter->writeAttribute('draw:dots2', '1');
                         $objWriter->writeAttribute('draw:dots2-length', '0.14cm');
+
                         break;
                     case Border::DASH_DOT:
                         $objWriter->writeAttribute('draw:distance', '0.105cm');
                         $objWriter->writeAttribute('draw:dots1', '1');
                         $objWriter->writeAttribute('draw:dots1-length', '0.035cm');
+
                         break;
                     case Border::DASH_LARGEDASH:
                         $objWriter->writeAttribute('draw:distance', '0.105cm');
                         $objWriter->writeAttribute('draw:dots2', '1');
                         $objWriter->writeAttribute('draw:dots2-length', '0.28cm');
+
                         break;
                     case Border::DASH_LARGEDASHDOT:
                         $objWriter->writeAttribute('draw:distance', '0.105cm');
@@ -223,6 +228,7 @@ class Styles extends AbstractDecoratorWriter
                         $objWriter->writeAttribute('draw:dots1-length', '0.035cm');
                         $objWriter->writeAttribute('draw:dots2', '1');
                         $objWriter->writeAttribute('draw:dots2-length', '0.28cm');
+
                         break;
                     case Border::DASH_LARGEDASHDOTDOT:
                         $objWriter->writeAttribute('draw:distance', '0.105cm');
@@ -230,11 +236,13 @@ class Styles extends AbstractDecoratorWriter
                         $objWriter->writeAttribute('draw:dots1-length', '0.035cm');
                         $objWriter->writeAttribute('draw:dots2', '1');
                         $objWriter->writeAttribute('draw:dots2-length', '0.28cm');
+
                         break;
                     case Border::DASH_SYSDASH:
                         $objWriter->writeAttribute('draw:distance', '0.035cm');
                         $objWriter->writeAttribute('draw:dots2', '1');
                         $objWriter->writeAttribute('draw:dots2-length', '0.105cm');
+
                         break;
                     case Border::DASH_SYSDASHDOT:
                         $objWriter->writeAttribute('draw:distance', '0.035cm');
@@ -242,6 +250,7 @@ class Styles extends AbstractDecoratorWriter
                         $objWriter->writeAttribute('draw:dots1-length', '0.035cm');
                         $objWriter->writeAttribute('draw:dots2', '1');
                         $objWriter->writeAttribute('draw:dots2-length', '0.105cm');
+
                         break;
                     case Border::DASH_SYSDASHDOTDOT:
                         $objWriter->writeAttribute('draw:distance', '0.035cm');
@@ -249,11 +258,13 @@ class Styles extends AbstractDecoratorWriter
                         $objWriter->writeAttribute('draw:dots1-length', '0.035cm');
                         $objWriter->writeAttribute('draw:dots2', '1');
                         $objWriter->writeAttribute('draw:dots2-length', '0.105cm');
+
                         break;
                     case Border::DASH_SYSDOT:
                         $objWriter->writeAttribute('draw:distance', '0.035cm');
                         $objWriter->writeAttribute('draw:dots1', '1');
                         $objWriter->writeAttribute('draw:dots1-length', '0.035cm');
+
                         break;
                 }
                 $objWriter->endElement();

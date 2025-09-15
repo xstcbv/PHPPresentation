@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of PHPPresentation - A pure PHP library for reading and writing
  * presentations documents.
@@ -12,7 +13,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -26,11 +26,11 @@ use PhpOffice\PhpPresentation\Style\Color as StyleColor;
 class Color extends AbstractBackground
 {
     /**
-     * @var StyleColor|null
+     * @var null|StyleColor
      */
     protected $color;
 
-    public function setColor(StyleColor $color = null): self
+    public function setColor(?StyleColor $color = null): self
     {
         $this->color = $color;
 

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of PHPPresentation - A pure PHP library for reading and writing
  * presentations documents.
@@ -12,7 +13,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -25,9 +25,6 @@ use PhpOffice\Common\XMLWriter;
 
 class PptTableProps extends AbstractDecoratorWriter
 {
-    /**
-     * @return ZipInterface
-     */
     public function render(): ZipInterface
     {
         // Create XML writer

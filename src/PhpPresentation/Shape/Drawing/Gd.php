@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of PHPPresentation - A pure PHP library for reading and writing
  * presentations documents.
@@ -12,7 +13,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -20,15 +20,17 @@ declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Shape\Drawing;
 
+use GdImage;
+
 class Gd extends AbstractDrawingAdapter
 {
-    /* Rendering functions */
+    // Rendering functions
     public const RENDERING_DEFAULT = 'imagepng';
     public const RENDERING_PNG = 'imagepng';
     public const RENDERING_GIF = 'imagegif';
     public const RENDERING_JPEG = 'imagejpeg';
 
-    /* MIME types */
+    // MIME types
     public const MIMETYPE_DEFAULT = 'image/png';
     public const MIMETYPE_PNG = 'image/png';
     public const MIMETYPE_GIF = 'image/gif';
@@ -68,7 +70,7 @@ class Gd extends AbstractDrawingAdapter
     public function __construct()
     {
         parent::__construct();
-        $this->uniqueName = md5(rand(0, 9999) . time() . rand(0, 9999));
+        $this->uniqueName = md5(mt_rand(0, 9999) . time() . mt_rand(0, 9999));
     }
 
     /**
@@ -84,7 +86,7 @@ class Gd extends AbstractDrawingAdapter
     /**
      * Set image resource.
      *
-     * @param resource $value
+     * @param null|false|GdImage|resource $value
      *
      * @return $this
      */
@@ -92,7 +94,7 @@ class Gd extends AbstractDrawingAdapter
     {
         $this->imageResource = $value;
 
-        if (!is_null($this->imageResource)) {
+        if (null !== $this->imageResource && false !== $this->imageResource) {
             // Get width/height
             $this->width = imagesx($this->imageResource);
             $this->height = imagesy($this->imageResource);

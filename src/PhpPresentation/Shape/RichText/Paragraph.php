@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of PHPPresentation - A pure PHP library for reading and writing
  * presentations documents.
@@ -12,7 +13,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -50,7 +50,7 @@ class Paragraph implements ComparableInterface
     /**
      * Font.
      *
-     * @var Font|null
+     * @var null|Font
      */
     private $font;
 
@@ -72,12 +72,12 @@ class Paragraph implements ComparableInterface
     private $lineSpacingMode = self::LINE_SPACING_MODE_PERCENT;
 
     /**
-     * @var int
+     * @var float
      */
     private $spacingBefore = 0;
 
     /**
-     * @var int
+     * @var float
      */
     private $spacingAfter = 0;
 
@@ -96,6 +96,17 @@ class Paragraph implements ComparableInterface
         $this->alignment = new Alignment();
         $this->font = new Font();
         $this->bulletStyle = new Bullet();
+    }
+
+    /**
+     * Magic Method : clone.
+     */
+    public function __clone()
+    {
+        // Clone each text
+        foreach ($this->richTextElements as &$rtElement) {
+            $rtElement = clone $rtElement;
+        }
     }
 
     /**
@@ -127,9 +138,9 @@ class Paragraph implements ComparableInterface
     /**
      * Set font.
      *
-     * @param Font|null $pFont Font
+     * @param null|Font $pFont Font
      */
-    public function setFont(Font $pFont = null): self
+    public function setFont(?Font $pFont = null): self
     {
         $this->font = $pFont;
 
@@ -145,9 +156,9 @@ class Paragraph implements ComparableInterface
     }
 
     /**
-     * Set bullet style
+     * Set bullet style.
      */
-    public function setBulletStyle(Bullet $style = null): self
+    public function setBulletStyle(?Bullet $style = null): self
     {
         $this->bulletStyle = $style;
 
@@ -170,9 +181,9 @@ class Paragraph implements ComparableInterface
     /**
      * Add text.
      *
-     * @param TextElementInterface|null $pText Rich text element
+     * @param null|TextElementInterface $pText Rich text element
      */
-    public function addText(TextElementInterface $pText = null): self
+    public function addText(?TextElementInterface $pText = null): self
     {
         $this->richTextElements[] = $pText;
 
@@ -276,7 +287,7 @@ class Paragraph implements ComparableInterface
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @return int|null Hash index
+     * @return null|int Hash index
      */
     public function getHashIndex(): ?int
     {
@@ -300,41 +311,26 @@ class Paragraph implements ComparableInterface
         return $this;
     }
 
-    /**
-     * @return int
-     */
     public function getLineSpacing(): int
     {
         return $this->lineSpacing;
     }
 
     /**
-     * Value in points
-     *
-     * @param int $lineSpacing
-     *
-     * @return self
+     * Value in points.
      */
-    public function setLineSpacing($lineSpacing): self
+    public function setLineSpacing(int $lineSpacing): self
     {
         $this->lineSpacing = $lineSpacing;
 
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getLineSpacingMode(): string
     {
         return $this->lineSpacingMode;
     }
 
-    /**
-     * @param string $lineSpacingMode
-     *
-     * @return self
-     */
     public function setLineSpacingMode(string $lineSpacingMode): self
     {
         if (in_array($lineSpacingMode, [
@@ -348,23 +344,17 @@ class Paragraph implements ComparableInterface
     }
 
     /**
-     * Value in points
-     *
-     * @return int
+     * Value in points.
      */
-    public function getSpacingBefore(): int
+    public function getSpacingBefore(): float
     {
         return $this->spacingBefore;
     }
 
     /**
-     * Value in points
-     *
-     * @param int $spacingBefore
-     *
-     * @return self
+     * Value in points.
      */
-    public function setSpacingBefore(int $spacingBefore): self
+    public function setSpacingBefore(float $spacingBefore): self
     {
         $this->spacingBefore = $spacingBefore;
 
@@ -372,23 +362,17 @@ class Paragraph implements ComparableInterface
     }
 
     /**
-     * Value in points
-     *
-     * @return int
+     * Value in points.
      */
-    public function getSpacingAfter(): int
+    public function getSpacingAfter(): float
     {
         return $this->spacingAfter;
     }
 
     /**
-     * Value in points
-     *
-     * @param int $spacingAfter
-     *
-     * @return self
+     * Value in points.
      */
-    public function setSpacingAfter(int $spacingAfter): self
+    public function setSpacingAfter(float $spacingAfter): self
     {
         $this->spacingAfter = $spacingAfter;
 

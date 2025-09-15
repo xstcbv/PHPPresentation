@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of PHPPresentation - A pure PHP library for reading and writing
  * presentations documents.
@@ -12,7 +13,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -43,13 +43,6 @@ abstract class AbstractGraphic extends AbstractShape implements ComparableInterf
     private $imageIndex = 0;
 
     /**
-     * Name.
-     *
-     * @var string
-     */
-    protected $name;
-
-    /**
      * Description.
      *
      * @var string
@@ -68,7 +61,7 @@ abstract class AbstractGraphic extends AbstractShape implements ComparableInterf
      *
      * @var string
      */
-    public $relationId = null;
+    public $relationId;
 
     /**
      * Create a new \PhpOffice\PhpPresentation\Slide\AbstractDrawing.
@@ -104,30 +97,6 @@ abstract class AbstractGraphic extends AbstractShape implements ComparableInterf
     public function getImageIndex()
     {
         return $this->imageIndex;
-    }
-
-    /**
-     * Get Name.
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * Set Name.
-     *
-     * @param string $pValue
-     *
-     * @return $this
-     */
-    public function setName($pValue = '')
-    {
-        $this->name = $pValue;
-
-        return $this;
     }
 
     /**

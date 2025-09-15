@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of PHPPresentation - A pure PHP library for reading and writing
  * presentations documents.
@@ -12,7 +13,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -28,10 +28,12 @@ class TextStyle
      * @var array<int, RichTextParagraph>
      */
     protected $bodyStyle = [];
+
     /**
      * @var array<int, RichTextParagraph>
      */
     protected $titleStyle = [];
+
     /**
      * @var array<int, RichTextParagraph>
      */
@@ -39,8 +41,6 @@ class TextStyle
 
     /**
      * TextStyle constructor.
-     *
-     * @param bool $default
      */
     public function __construct(bool $default = true)
     {
@@ -53,7 +53,7 @@ class TextStyle
             $oRTParagraphBody = new RichTextParagraph();
             $oRTParagraphBody->getAlignment()
                 ->setHorizontal(Alignment::HORIZONTAL_CENTER)
-                ->setIndent(-324900 / 9525)
+                ->setIndent(-342900 / 9525)
                 ->setMarginLeft(342900 / 9525);
             $oRTParagraphBody->getFont()->setSize(32)->setColor($oColorTX1);
             $this->bodyStyle[1] = $oRTParagraphBody;
@@ -72,7 +72,7 @@ class TextStyle
 
     private function checkLvl(?int $lvl): bool
     {
-        if (is_null($lvl) || $lvl > 9) {
+        if (null === $lvl || $lvl > 9) {
             return false;
         }
 
@@ -97,9 +97,6 @@ class TextStyle
         return $this;
     }
 
-    /**
-     * @return TextStyle
-     */
     public function setOtherStyleAtLvl(RichTextParagraph $style, ?int $lvl): self
     {
         if ($this->checkLvl($lvl)) {

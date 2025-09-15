@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of PHPPresentation - A pure PHP library for reading and writing
  * presentations documents.
@@ -12,7 +13,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -39,15 +39,15 @@ class IteratorTest extends TestCase
 
         $object = new Iterator($oPhpPresentation);
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide', $object->current());
-        $this->assertEquals(0, $object->key());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Slide', $object->current());
+        self::assertEquals(0, $object->key());
         $object->next();
-        $this->assertEquals(1, $object->key());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide', $object->current());
-        $this->assertTrue($object->valid());
+        self::assertEquals(1, $object->key());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Slide', $object->current());
+        self::assertTrue($object->valid());
         $object->next();
-        $this->assertFalse($object->valid());
+        self::assertFalse($object->valid());
         $object->rewind();
-        $this->assertEquals(0, $object->key());
+        self::assertEquals(0, $object->key());
     }
 }

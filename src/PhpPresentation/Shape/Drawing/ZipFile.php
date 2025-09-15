@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of PHPPresentation - A pure PHP library for reading and writing
  * presentations documents.
@@ -12,7 +13,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -22,6 +22,7 @@ namespace PhpOffice\PhpPresentation\Shape\Drawing;
 
 use PhpOffice\Common\File as CommonFile;
 use PhpOffice\PhpPresentation\Exception\FileNotFoundException;
+use ZipArchive;
 
 class ZipFile extends AbstractDrawingAdapter
 {
@@ -42,8 +43,6 @@ class ZipFile extends AbstractDrawingAdapter
      * Set Path.
      *
      * @param string $pValue File path
-     *
-     * @return \PhpOffice\PhpPresentation\Shape\Drawing\ZipFile
      */
     public function setPath(string $pValue = ''): self
     {
@@ -52,16 +51,13 @@ class ZipFile extends AbstractDrawingAdapter
         return $this;
     }
 
-    /**
-     * @throws FileNotFoundException
-     */
     public function getContents(): string
     {
         if (!CommonFile::fileExists($this->getZipFileOut())) {
             throw new FileNotFoundException($this->getZipFileOut());
         }
 
-        $imageZip = new \ZipArchive();
+        $imageZip = new ZipArchive();
         $imageZip->open($this->getZipFileOut());
         $imageContents = $imageZip->getFromName($this->getZipFileIn());
         $imageZip->close();
@@ -75,15 +71,12 @@ class ZipFile extends AbstractDrawingAdapter
         return pathinfo($this->getZipFileIn(), PATHINFO_EXTENSION);
     }
 
-    /**
-     * @throws FileNotFoundException
-     */
     public function getMimeType(): string
     {
         if (!CommonFile::fileExists($this->getZipFileOut())) {
             throw new FileNotFoundException($this->getZipFileOut());
         }
-        $oArchive = new \ZipArchive();
+        $oArchive = new ZipArchive();
         $oArchive->open($this->getZipFileOut());
         if (!function_exists('getimagesizefromstring')) {
             $uri = 'data://application/octet-stream;base64,' . base64_encode($oArchive->getFromName($this->getZipFileIn()));
