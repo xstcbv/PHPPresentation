@@ -62,6 +62,7 @@ $lineChart = new Line();
 $series = new Series('Downloads', $seriesData);
 $series->setShowSeriesName(true);
 $series->setShowValue(true);
+$series->setLabelPosition(Series::LABEL_BOTTOM);
 $lineChart->addSeries($series);
 
 // Create a shape (chart)
@@ -224,7 +225,7 @@ $shape6->setDisplayBlankAs(Chart::BLANKAS_GAP);
 $currentSlide->addShape($shape6);
 
 // Save file
-echo EOL . write($objPHPPresentation, basename(__FILE__, '.php'), $writers);
+echo EOL . write($objPHPPresentation, basename(__FILE__, '.php'));
 
 if (!CLI) {
     include_once 'Sample_Footer.php';

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of PHPPresentation - A pure PHP library for reading and writing
  * presentations documents.
@@ -12,7 +13,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -35,10 +35,8 @@ class Serialized extends AbstractWriter implements WriterInterface
 {
     /**
      * Create a new \PhpOffice\PhpPresentation\Writer\Serialized.
-     *
-     * @param \PhpOffice\PhpPresentation\PhpPresentation $pPhpPresentation
      */
-    public function __construct(PhpPresentation $pPhpPresentation = null)
+    public function __construct(?PhpPresentation $pPhpPresentation = null)
     {
         // Set PhpPresentation
         $this->setPhpPresentation($pPhpPresentation ?? new PhpPresentation());
@@ -49,9 +47,6 @@ class Serialized extends AbstractWriter implements WriterInterface
 
     /**
      * Save PhpPresentation to file.
-     *
-     * @throws DirectoryNotFoundException
-     * @throws InvalidParameterException
      */
     public function save(string $pFilename): void
     {
@@ -72,12 +67,11 @@ class Serialized extends AbstractWriter implements WriterInterface
         // Add media
         $slideCount = $oPresentation->getSlideCount();
         for ($i = 0; $i < $slideCount; ++$i) {
-            for ($j = 0; $j < $oPresentation->getSlide($i)->getShapeCollection()->count(); ++$j) {
-                if ($oPresentation->getSlide($i)->getShapeCollection()->offsetGet($j) instanceof AbstractDrawingAdapter) {
-                    $imgTemp = $oPresentation->getSlide($i)->getShapeCollection()->offsetGet($j);
+            foreach ($oPresentation->getSlide($i)->getShapeCollection() as $shape) {
+                if ($shape instanceof AbstractDrawingAdapter) {
                     $objZip->addFromString(
-                        'media/' . $imgTemp->getImageIndex() . '/' . pathinfo($imgTemp->getPath(), PATHINFO_BASENAME),
-                        file_get_contents($imgTemp->getPath())
+                        'media/' . $shape->getImageIndex() . '/' . pathinfo($shape->getPath(), PATHINFO_BASENAME),
+                        file_get_contents($shape->getPath())
                     );
                 }
             }
@@ -93,12 +87,11 @@ class Serialized extends AbstractWriter implements WriterInterface
     /**
      * Serialize PhpPresentation object to XML.
      *
-     * @param PhpPresentation|null $pPhpPresentation
      * @param string $pFilename
      *
      * @return string XML Output
      */
-    protected function writeSerialized(PhpPresentation $pPhpPresentation = null, $pFilename = '')
+    protected function writeSerialized(?PhpPresentation $pPhpPresentation = null, $pFilename = '')
     {
         // Clone $pPhpPresentation
         $pPhpPresentation = clone $pPhpPresentation;
@@ -106,14 +99,13 @@ class Serialized extends AbstractWriter implements WriterInterface
         // Update media links
         $slideCount = $pPhpPresentation->getSlideCount();
         for ($i = 0; $i < $slideCount; ++$i) {
-            for ($j = 0; $j < $pPhpPresentation->getSlide($i)->getShapeCollection()->count(); ++$j) {
-                if ($pPhpPresentation->getSlide($i)->getShapeCollection()->offsetGet($j) instanceof AbstractDrawingAdapter) {
-                    $imgTemp = $pPhpPresentation->getSlide($i)->getShapeCollection()->offsetGet($j);
-                    $imgPath = 'zip://' . $pFilename . '#media/' . $imgTemp->getImageIndex() . '/' . pathinfo($imgTemp->getPath(), PATHINFO_BASENAME);
-                    if ($imgTemp instanceof File) {
-                        $imgTemp->setPath($imgPath, false);
+            foreach ($pPhpPresentation->getSlide($i)->getShapeCollection() as $shape) {
+                if ($shape instanceof AbstractDrawingAdapter) {
+                    $imgPath = 'zip://' . $pFilename . '#media/' . $shape->getImageIndex() . '/' . pathinfo($shape->getPath(), PATHINFO_BASENAME);
+                    if ($shape instanceof File) {
+                        $shape->setPath($imgPath, false);
                     } else {
-                        $imgTemp->setPath($imgPath);
+                        $shape->setPath($imgPath);
                     }
                 }
             }

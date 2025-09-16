@@ -5,15 +5,17 @@
 .Trashes
 Thumbs.db
 Desktop.ini
+.idea/
 
 ### Continuous Integration
 build/
 phpunit.xml
+php-cs-fixer.phar
 .php-cs-fixer.cache
 .phpunit.result.cache
 composer.phar
 vendor
-/batch_CI.bat
+/odfvalidator.jar
 
 ### Samples
 /samples/Sample_00_Test.php

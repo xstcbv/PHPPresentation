@@ -85,7 +85,7 @@ $oCell = $row->nextCell();
 $oCell->createTextRun('R2C1');
 $oCell->getActiveParagraph()->getAlignment()
     ->setMarginLeft(30)
-    ->setTextDirection(\PhpOffice\PhpPresentation\Style\Alignment::TEXT_DIRECTION_VERTICAL_270);
+    ->setTextDirection(PhpOffice\PhpPresentation\Style\Alignment::TEXT_DIRECTION_VERTICAL_270);
 $oCell = $row->nextCell();
 $oCell->createTextRun('R2C2');
 $oCell->getActiveParagraph()->getAlignment()
@@ -138,7 +138,7 @@ $textRunC3 = $cellC3->createTextRun('Link Google');
 $textRunC3->getHyperlink()->setUrl('https://google.com')->setTooltip('Google');
 
 // Save file
-echo write($objPHPPresentation, basename(__FILE__, '.php'), $writers);
+echo write($objPHPPresentation, basename(__FILE__, '.php'));
 if (!CLI) {
     include_once 'Sample_Footer.php';
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of PHPPresentation - A pure PHP library for reading and writing
  * presentations documents.
@@ -12,7 +13,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -57,7 +57,7 @@ class Base64 extends AbstractDrawingAdapter
     public function __construct()
     {
         parent::__construct();
-        $this->uniqueName = md5(rand(0, 9999) . time() . rand(0, 9999));
+        $this->uniqueName = md5(mt_rand(0, 9999) . time() . mt_rand(0, 9999));
         $this->data = '';
     }
 
@@ -75,19 +75,16 @@ class Base64 extends AbstractDrawingAdapter
 
     public function getContents(): string
     {
-        list(, $imageContents) = explode(';', $this->getData());
-        list(, $imageContents) = explode(',', $imageContents);
+        [, $imageContents] = explode(';', $this->getData());
+        [, $imageContents] = explode(',', $imageContents);
 
         return base64_decode($imageContents);
     }
 
-    /**
-     * @throws UnauthorizedMimetypeException
-     */
     public function getExtension(): string
     {
-        list($data) = explode(';', $this->getData());
-        list(, $mime) = explode(':', $data);
+        [$data] = explode(';', $this->getData());
+        [, $mime] = explode(':', $data);
 
         if (!array_key_exists($mime, $this->arrayMimeExtension)) {
             throw new UnauthorizedMimetypeException($mime, $this->arrayMimeExtension);
@@ -103,8 +100,8 @@ class Base64 extends AbstractDrawingAdapter
 
     public function getMimeType(): string
     {
-        list($data) = explode(';', $this->getData());
-        list(, $mime) = explode(':', $data);
+        [$data] = explode(';', $this->getData());
+        [, $mime] = explode(':', $data);
 
         if (!empty($mime)) {
             return $mime;

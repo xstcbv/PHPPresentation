@@ -17,7 +17,7 @@ $currentSlide = $objPHPPresentation->getActiveSlide();
 
 // Generate an image
 echo date('H:i:s') . ' Generate an image' . EOL;
-$gdImage = @imagecreatetruecolor(140, 20) or exit('Cannot Initialize new GD image stream');
+$gdImage = imagecreatetruecolor(140, 20);
 $textColor = imagecolorallocate($gdImage, 255, 255, 255);
 imagestring($gdImage, 1, 5, 5, 'Created with PHPPresentation', $textColor);
 
@@ -35,7 +35,8 @@ $currentSlide->addShape($shape);
 
 // Add a file drawing (GIF) to the slide
 $shape = new Drawing\File();
-$shape->setName('Image File')
+$shape
+    ->setName('Image File')
     ->setDescription('Image File')
     ->setPath(__DIR__ . '/resources/phppowerpoint_logo.gif')
     ->setHeight(36)
@@ -95,7 +96,7 @@ $shape->setName('Image File SVG')
 $currentSlide->addShape($shape);
 
 // Save file
-echo write($objPHPPresentation, basename(__FILE__, '.php'), $writers);
+echo write($objPHPPresentation, basename(__FILE__, '.php'));
 if (!CLI) {
     include_once 'Sample_Footer.php';
 }

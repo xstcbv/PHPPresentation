@@ -16,11 +16,16 @@ parameters:
     - '#^Parameter \#1 \$pValue of static method PhpOffice\\Common\\Drawing\:\:pixelsToCentimeters\(\) expects int, float given\.#'
     - '#^Parameter \#1 \$pValue of static method PhpOffice\\Common\\Drawing\:\:pixelsToEmu\(\) expects int, float given\.#'
     ## PHP 8.0 & GdImage
+    - '#^Parameter \$value of method PhpOffice\\PhpPresentation\\Shape\\Drawing\\Gd::setImageResource\(\) has invalid type GdImage.#'
+    - '#^Parameter \#1 \$value of method PhpOffice\\PhpPresentation\\Shape\\Drawing\\Gd::setImageResource\(\) expects resource\|null, GdImage\ given\.#'
     - '#^Parameter \#1 \$value of method PhpOffice\\PhpPresentation\\Shape\\Drawing\\Gd::setImageResource\(\) expects resource\|null, GdImage\|false given\.#'
+    - '#^Parameter \#1 \$value of method PhpOffice\\PhpPresentation\\Shape\\Drawing\\Gd::setImageResource\(\) expects resource\|null, \(GdImage\|false\) given\.#'
     - '#^Parameter \#1 \$image of function imagesx expects GdImage, resource given\.#'
     - '#^Parameter \#1 \$image of function imagesy expects GdImage, resource given\.#'
     - '#^Parameter \#1 \$image of function imagealphablending expects GdImage, resource given\.#'
     - '#^Parameter \#1 \$image of function imagesavealpha expects GdImage, resource given\.#'
+    # # PHP 8.0 & Attribute
+    - '#^Attribute class PHPUnit\\Framework\\Attributes\\DataProvider does not exist\.#'
 
   ## Remove after remove ArrayObject
   treatPhpDocTypesAsCertain: false

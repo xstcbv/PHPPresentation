@@ -23,12 +23,13 @@
         "ext-xml": "*",
         "ext-zip": "*",
         "phpoffice/common": "^1",
-        "phpoffice/phpspreadsheet": "^1.9.0"
+        "phpoffice/phpspreadsheet": "^1.9 || ^2.0 || ^3.0 || ^4.0"
     },
     "require-dev": {
         "phpunit/phpunit": ">=7.0",
         "phpmd/phpmd": "2.*",
-        "phpstan/phpstan": "^0.12.88"
+        "phpstan/phpstan": "^0.12.88 || ^1.0.0",
+        "dompdf/dompdf": "^3.1"
     },
     "suggest": {
         "ext-gd": "Required to add images"
@@ -42,6 +43,7 @@
         "samples": [
             "php samples/Sample_01_Complex.php",
             "php samples/Sample_01_Simple.php",
+            "php samples/Sample_02_Serialized.php",
             "php samples/Sample_03_Image.php",
             "php samples/Sample_03_Video.php",
             "php samples/Sample_04_Table.php",
@@ -61,7 +63,9 @@
             "php samples/Sample_17_Comment.php",
             "php samples/Sample_18_Animation.php",
             "php samples/Sample_19_SlideMaster.php",
-            "php samples/Sample_20_ExternalSlide.php"
+            "php samples/Sample_20_SlideLayout.php",
+            "php samples/Sample_21_AutoShape.php",
+            "php samples/Sample_22_ExternalSlide.php"
         ]
     }
 }

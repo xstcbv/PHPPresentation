@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of PHPPresentation - A pure PHP library for reading and writing
  * presentations documents.
@@ -12,7 +13,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -20,42 +20,9 @@ declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Slide;
 
-use PhpOffice\PhpPresentation\AbstractShape;
+use PhpOffice\PhpPresentation\Traits\ShapeCollection;
 
 class Animation
 {
-    /**
-     * @var array<AbstractShape>
-     */
-    protected $shapeCollection = [];
-
-    /**
-     * @return Animation
-     */
-    public function addShape(AbstractShape $shape)
-    {
-        $this->shapeCollection[] = $shape;
-
-        return $this;
-    }
-
-    /**
-     * @return array<AbstractShape>
-     */
-    public function getShapeCollection(): array
-    {
-        return $this->shapeCollection;
-    }
-
-    /**
-     * @param array<AbstractShape> $array
-     *
-     * @return Animation
-     */
-    public function setShapeCollection(array $array = [])
-    {
-        $this->shapeCollection = $array;
-
-        return $this;
-    }
+    use ShapeCollection;
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of PHPPresentation - A pure PHP library for reading and writing
  * presentations documents.
@@ -12,7 +13,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -33,21 +33,27 @@ class AnimationTest extends TestCase
 {
     public function testShape(): void
     {
-        /** @var AbstractShape $oStub */
-        $oStub = $this->getMockForAbstractClass(AbstractShape::class);
+        if (method_exists($this, 'getMockForAbstractClass')) {
+            /** @var AbstractShape $oStub */
+            $oStub = $this->getMockForAbstractClass(AbstractShape::class);
+        } else {
+            /** @var AbstractShape $oStub */
+            $oStub = new class() extends AbstractShape {
+            };
+        }
 
         $object = new Animation();
 
-        $this->assertIsArray($object->getShapeCollection());
-        $this->assertCount(0, $object->getShapeCollection());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\Animation', $object->addShape($oStub));
-        $this->assertIsArray($object->getShapeCollection());
-        $this->assertCount(1, $object->getShapeCollection());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\Animation', $object->setShapeCollection());
-        $this->assertIsArray($object->getShapeCollection());
-        $this->assertCount(0, $object->getShapeCollection());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\Animation', $object->setShapeCollection([$oStub]));
-        $this->assertIsArray($object->getShapeCollection());
-        $this->assertCount(1, $object->getShapeCollection());
+        self::assertIsArray($object->getShapeCollection());
+        self::assertCount(0, $object->getShapeCollection());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\Animation', $object->addShape($oStub));
+        self::assertIsArray($object->getShapeCollection());
+        self::assertCount(1, $object->getShapeCollection());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\Animation', $object->setShapeCollection());
+        self::assertIsArray($object->getShapeCollection());
+        self::assertCount(0, $object->getShapeCollection());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\Animation', $object->setShapeCollection([$oStub]));
+        self::assertIsArray($object->getShapeCollection());
+        self::assertCount(1, $object->getShapeCollection());
     }
 }

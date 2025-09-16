@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of PHPPresentation - A pure PHP library for reading and writing
  * presentations documents.
@@ -12,7 +13,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -48,9 +48,12 @@ class Image extends AbstractBackground
     protected $width;
 
     /**
+     * @var string
+     */
+    protected $extension;
+
+    /**
      * Get Path.
-     *
-     * @return string
      */
     public function getPath(): ?string
     {
@@ -63,8 +66,6 @@ class Image extends AbstractBackground
      * @param string $pValue File path
      * @param bool $pVerifyFile Verify file
      *
-     * @throws FileNotFoundException
-     *
      * @return self
      */
     public function setPath(string $pValue = '', bool $pVerifyFile = true)
@@ -76,7 +77,7 @@ class Image extends AbstractBackground
 
             if (0 == $this->width && 0 == $this->height) {
                 // Get width/height
-                list($this->width, $this->height) = getimagesize($pValue);
+                [$this->width, $this->height] = getimagesize($pValue);
             }
         }
         $this->path = $pValue;
@@ -85,9 +86,19 @@ class Image extends AbstractBackground
     }
 
     /**
-     * Get Filename.
+     * Set Extension.
      *
-     * @return string
+     * @param string $pValue File Extension
+     */
+    public function setExtension(string $pValue): self
+    {
+        $this->extension = $pValue;
+
+        return $this;
+    }
+
+    /**
+     * Get Filename.
      */
     public function getFilename(): string
     {
@@ -96,11 +107,12 @@ class Image extends AbstractBackground
 
     /**
      * Get Extension.
-     *
-     * @return string
      */
     public function getExtension(): string
     {
+        if ($this->extension) {
+            return $this->extension;
+        }
         $exploded = explode('.', $this->getFilename());
 
         return $exploded[count($exploded) - 1];

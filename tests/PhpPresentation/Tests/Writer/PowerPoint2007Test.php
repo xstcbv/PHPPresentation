@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of PHPPresentation - A pure PHP library for reading and writing
  * presentations documents.
@@ -12,7 +13,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -41,8 +41,8 @@ class PowerPoint2007Test extends PhpPresentationTestCase
     {
         $object = new PowerPoint2007($this->oPresentation);
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PhpPresentation', $object->getPhpPresentation());
-        $this->assertEquals('./', $object->getDiskCachingDirectory());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\PhpPresentation', $object->getPhpPresentation());
+        self::assertEquals('./', $object->getDiskCachingDirectory());
     }
 
     /**
@@ -55,7 +55,7 @@ class PowerPoint2007Test extends PhpPresentationTestCase
         $object = new PowerPoint2007($this->oPresentation);
         $object->save($filename);
 
-        $this->assertTrue(file_exists($filename));
+        self::assertFileExists($filename);
 
         unlink($filename);
     }
@@ -78,15 +78,15 @@ class PowerPoint2007Test extends PhpPresentationTestCase
     public function testDiskCaching(): void
     {
         $object = new PowerPoint2007($this->oPresentation);
-        $this->assertFalse($object->hasDiskCaching());
+        self::assertFalse($object->hasDiskCaching());
 
         $object->setUseDiskCaching(true);
-        $this->assertTrue($object->hasDiskCaching());
-        $this->assertEquals('./', $object->getDiskCachingDirectory());
+        self::assertTrue($object->hasDiskCaching());
+        self::assertEquals('./', $object->getDiskCachingDirectory());
 
         $object->setUseDiskCaching(true, sys_get_temp_dir());
-        $this->assertTrue($object->hasDiskCaching());
-        $this->assertEquals(sys_get_temp_dir(), $object->getDiskCachingDirectory());
+        self::assertTrue($object->hasDiskCaching());
+        self::assertEquals(sys_get_temp_dir(), $object->getDiskCachingDirectory());
     }
 
     /**

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of PHPPresentation - A pure PHP library for reading and writing
  * presentations documents.
@@ -12,7 +13,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -26,13 +26,6 @@ class DocPropsCoreTest extends PhpPresentationTestCase
 {
     protected $writerName = 'PowerPoint2007';
 
-    public function testRender(): void
-    {
-        $this->assertZipFileExists('docProps/core.xml');
-        $this->assertZipXmlElementNotExists('docProps/core.xml', '/cp:coreProperties/cp:contentStatus');
-        $this->assertIsSchemaECMA376Valid();
-    }
-
     public function testDocumentProperties(): void
     {
         $expected = 'aAbBcDeE';
@@ -43,7 +36,9 @@ class DocPropsCoreTest extends PhpPresentationTestCase
             ->setDescription($expected)
             ->setSubject($expected)
             ->setKeywords($expected)
-            ->setCategory($expected);
+            ->setCategory($expected)
+            ->setRevision($expected)
+            ->setStatus($expected);
 
         $this->assertZipFileExists('docProps/core.xml');
         $this->assertZipXmlElementExists('docProps/core.xml', '/cp:coreProperties/dc:creator');
@@ -58,6 +53,10 @@ class DocPropsCoreTest extends PhpPresentationTestCase
         $this->assertZipXmlElementEquals('docProps/core.xml', '/cp:coreProperties/cp:keywords', $expected);
         $this->assertZipXmlElementExists('docProps/core.xml', '/cp:coreProperties/cp:category');
         $this->assertZipXmlElementEquals('docProps/core.xml', '/cp:coreProperties/cp:category', $expected);
+        $this->assertZipXmlElementExists('docProps/core.xml', '/cp:coreProperties/cp:revision');
+        $this->assertZipXmlElementEquals('docProps/core.xml', '/cp:coreProperties/cp:revision', $expected);
+        $this->assertZipXmlElementExists('docProps/core.xml', '/cp:coreProperties/cp:contentStatus');
+        $this->assertZipXmlElementEquals('docProps/core.xml', '/cp:coreProperties/cp:contentStatus', $expected);
         $this->assertIsSchemaECMA376Valid();
     }
 
@@ -74,7 +73,8 @@ class DocPropsCoreTest extends PhpPresentationTestCase
     {
         $this->oPresentation->getPresentationProperties()->markAsFinal(false);
 
-        $this->assertZipXmlElementNotExists('docProps/core.xml', '/cp:coreProperties/cp:contentStatus');
+        $this->assertZipXmlElementExists('docProps/core.xml', '/cp:coreProperties/cp:contentStatus');
+        $this->assertZipXmlElementEquals('docProps/core.xml', '/cp:coreProperties/cp:contentStatus', '');
         $this->assertIsSchemaECMA376Valid();
     }
 }

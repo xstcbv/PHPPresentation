@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of PHPPresentation - A pure PHP library for reading and writing
  * presentations documents.
@@ -12,7 +13,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -102,19 +102,11 @@ class Marker
         return $this;
     }
 
-    /**
-     * @return Fill
-     */
     public function getFill(): Fill
     {
         return $this->fill;
     }
 
-    /**
-     * @param Fill $fill
-     *
-     * @return self
-     */
     public function setFill(Fill $fill): self
     {
         $this->fill = $fill;
@@ -122,19 +114,11 @@ class Marker
         return $this;
     }
 
-    /**
-     * @return Border
-     */
     public function getBorder(): Border
     {
         return $this->border;
     }
 
-    /**
-     * @param Border $border
-     *
-     * @return self
-     */
     public function setBorder(Border $border): self
     {
         $this->border = $border;

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of PHPPresentation - A pure PHP library for reading and writing
  * presentations documents.
@@ -12,7 +13,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -32,7 +32,7 @@ class ThumbnailsThumbnail extends AbstractDecoratorWriter
             // PNG : 8bit, non-interlaced with full alpha transparency
             $gdImage = imagecreatefromstring(file_get_contents($pathThumbnail));
             if ($gdImage) {
-                list($width, $height) = getimagesize($pathThumbnail);
+                [$width, $height] = getimagesize($pathThumbnail);
 
                 $gdRender = imagecreatetruecolor(128, 128);
                 $colorBgAlpha = imagecolorallocatealpha($gdRender, 0, 0, 0, 127);

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of PHPPresentation - A pure PHP library for reading and writing
  * presentations documents.
@@ -12,7 +13,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -23,7 +23,7 @@ namespace PhpOffice\PhpPresentation\Shape\Chart\Type;
 /**
  * \PhpOffice\PhpPresentation\Shape\Chart\Type\Bar.
  */
-class AbstractTypeBar extends AbstractType
+abstract class AbstractTypeBar extends AbstractType
 {
     /** Orientation of bars */
     public const DIRECTION_VERTICAL = 'col';
@@ -68,7 +68,7 @@ class AbstractTypeBar extends AbstractType
      *
      * @param string $value
      *
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\Type\AbstractTypeBar
+     * @return AbstractTypeBar
      */
     public function setBarDirection($value = self::DIRECTION_VERTICAL)
     {
@@ -92,7 +92,7 @@ class AbstractTypeBar extends AbstractType
      *
      * @param string $value
      *
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\Type\AbstractTypeBar
+     * @return AbstractTypeBar
      */
     public function setBarGrouping($value = self::GROUPING_CLUSTERED)
     {
@@ -142,9 +142,6 @@ class AbstractTypeBar extends AbstractType
         return $this;
     }
 
-    /**
-     * @return int
-     */
     public function getOverlapWidthPercent(): int
     {
         return $this->overlapWidthPercent;
@@ -152,8 +149,6 @@ class AbstractTypeBar extends AbstractType
 
     /**
      * @param int $value overlap width percentage
-     *
-     * @return self
      */
     public function setOverlapWidthPercent(int $value): self
     {

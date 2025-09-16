@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of PHPPresentation - A pure PHP library for reading and writing
  * presentations documents.
@@ -12,7 +13,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -29,19 +29,19 @@ class MediaTest extends TestCase
     {
         $object = new Media();
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Drawing\\File', $object);
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Drawing\\File', $object);
     }
 
     public function testMimeType(): void
     {
         $object = new Media();
         $object->setPath('file.mp4', false);
-        $this->assertEquals('video/mp4', $object->getMimeType());
+        self::assertEquals('video/mp4', $object->getMimeType());
         $object->setPath('file.ogv', false);
-        $this->assertEquals('video/ogg', $object->getMimeType());
+        self::assertEquals('video/ogv', $object->getMimeType());
         $object->setPath('file.wmv', false);
-        $this->assertEquals('video/x-ms-wmv', $object->getMimeType());
+        self::assertEquals('video/x-ms-wmv', $object->getMimeType());
         $object->setPath('file.xxx', false);
-        $this->assertEquals('application/octet-stream', $object->getMimeType());
+        self::assertEquals('application/octet-stream', $object->getMimeType());
     }
 }

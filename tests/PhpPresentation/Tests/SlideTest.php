@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of PHPPresentation - A pure PHP library for reading and writing
  * presentations documents.
@@ -12,7 +13,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -21,6 +21,8 @@ declare(strict_types=1);
 namespace PhpOffice\PhpPresentation\Tests;
 
 use PhpOffice\PhpPresentation\PhpPresentation;
+use PhpOffice\PhpPresentation\Shape\Drawing\File;
+use PhpOffice\PhpPresentation\ShapeContainerInterface;
 use PhpOffice\PhpPresentation\Slide;
 use PhpOffice\PhpPresentation\Slide\AbstractBackground;
 use PhpOffice\PhpPresentation\Slide\Animation;
@@ -37,110 +39,158 @@ class SlideTest extends TestCase
     public function testExtents(): void
     {
         $object = new Slide();
-        $this->assertNotNull($object->getExtentX());
+        self::assertNotNull($object->getExtentX());
 
         $object = new Slide();
-        $this->assertNotNull($object->getExtentY());
+        self::assertNotNull($object->getExtentY());
     }
 
     public function testOffset(): void
     {
         $object = new Slide();
-        $this->assertNotNull($object->getOffsetX());
+        self::assertNotNull($object->getOffsetX());
 
         $object = new Slide();
-        $this->assertNotNull($object->getOffsetY());
+        self::assertNotNull($object->getOffsetY());
     }
 
     public function testParent(): void
     {
         $object = new Slide();
-        $this->assertNull($object->getParent());
+        self::assertNull($object->getParent());
 
         $oPhpPresentation = new PhpPresentation();
         $object = new Slide($oPhpPresentation);
-        $this->assertInstanceOf(PhpPresentation::class, $object->getParent());
+        self::assertInstanceOf(PhpPresentation::class, $object->getParent());
     }
 
     public function testSlideMasterId(): void
     {
         $value = mt_rand(1, 100);
         $object = new Slide();
-        $this->assertEquals(1, $object->getSlideMasterId());
-        $this->assertInstanceOf(Slide::class, $object->setSlideMasterId());
-        $this->assertEquals(1, $object->getSlideMasterId());
-        $this->assertInstanceOf(Slide::class, $object->setSlideMasterId($value));
-        $this->assertEquals($value, $object->getSlideMasterId());
+        self::assertEquals(1, $object->getSlideMasterId());
+        self::assertInstanceOf(Slide::class, $object->setSlideMasterId());
+        self::assertEquals(1, $object->getSlideMasterId());
+        self::assertInstanceOf(Slide::class, $object->setSlideMasterId($value));
+        self::assertEquals($value, $object->getSlideMasterId());
     }
 
     public function testAnimations(): void
     {
-        /** @var Animation $oStub */
-        $oStub = $this->getMockForAbstractClass(Animation::class);
+        if (method_exists($this, 'getMockForAbstractClass')) {
+            /** @var Animation $oStub */
+            $oStub = $this->getMockForAbstractClass(Animation::class);
+        } else {
+            /** @var Animation $oStub */
+            $oStub = new class() extends Animation {
+            };
+        }
 
         $object = new Slide();
-        $this->assertIsArray($object->getAnimations());
-        $this->assertCount(0, $object->getAnimations());
-        $this->assertInstanceOf(Slide::class, $object->addAnimation($oStub));
-        $this->assertIsArray($object->getAnimations());
-        $this->assertCount(1, $object->getAnimations());
-        $this->assertInstanceOf(Slide::class, $object->setAnimations());
-        $this->assertIsArray($object->getAnimations());
-        $this->assertCount(0, $object->getAnimations());
-        $this->assertInstanceOf(Slide::class, $object->setAnimations([$oStub]));
-        $this->assertIsArray($object->getAnimations());
-        $this->assertCount(1, $object->getAnimations());
+        self::assertIsArray($object->getAnimations());
+        self::assertCount(0, $object->getAnimations());
+        self::assertInstanceOf(Slide::class, $object->addAnimation($oStub));
+        self::assertIsArray($object->getAnimations());
+        self::assertCount(1, $object->getAnimations());
+        self::assertInstanceOf(Slide::class, $object->setAnimations());
+        self::assertIsArray($object->getAnimations());
+        self::assertCount(0, $object->getAnimations());
+        self::assertInstanceOf(Slide::class, $object->setAnimations([$oStub]));
+        self::assertIsArray($object->getAnimations());
+        self::assertCount(1, $object->getAnimations());
     }
 
     public function testBackground(): void
     {
-        /** @var AbstractBackground $oStub */
-        $oStub = $this->getMockForAbstractClass(AbstractBackground::class);
+        if (method_exists($this, 'getMockForAbstractClass')) {
+            /** @var AbstractBackground $oStub */
+            $oStub = $this->getMockForAbstractClass(AbstractBackground::class);
+        } else {
+            /** @var AbstractBackground $oStub */
+            $oStub = new class() extends AbstractBackground {
+            };
+        }
 
         $object = new Slide();
-        $this->assertNull($object->getBackground());
-        $this->assertInstanceOf(Slide::class, $object->setBackground($oStub));
-        $this->assertInstanceOf(AbstractBackground::class, $object->getBackground());
-        $this->assertInstanceOf(Slide::class, $object->setBackground());
-        $this->assertNull($object->getBackground());
+        self::assertNull($object->getBackground());
+        self::assertInstanceOf(Slide::class, $object->setBackground($oStub));
+        self::assertInstanceOf(AbstractBackground::class, $object->getBackground());
+        self::assertInstanceOf(Slide::class, $object->setBackground());
+        self::assertNull($object->getBackground());
     }
 
     public function testGroup(): void
     {
         $object = new Slide();
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Group', $object->createGroup());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Group', $object->createGroup());
     }
 
     public function testName(): void
     {
         $object = new Slide();
-        $this->assertNull($object->getName());
-        $this->assertInstanceOf(Slide::class, $object->setName('AAAA'));
-        $this->assertEquals('AAAA', $object->getName());
-        $this->assertInstanceOf(Slide::class, $object->setName());
-        $this->assertNull($object->getName());
+        self::assertNull($object->getName());
+        self::assertInstanceOf(Slide::class, $object->setName('AAAA'));
+        self::assertEquals('AAAA', $object->getName());
+        self::assertInstanceOf(Slide::class, $object->setName());
+        self::assertNull($object->getName());
     }
 
     public function testTransition(): void
     {
         $object = new Slide();
         $oTransition = new Transition();
-        $this->assertNull($object->getTransition());
-        $this->assertInstanceOf(Slide::class, $object->setTransition());
-        $this->assertNull($object->getTransition());
-        $this->assertInstanceOf(Slide::class, $object->setTransition($oTransition));
-        $this->assertInstanceOf(Transition::class, $object->getTransition());
-        $this->assertInstanceOf(Slide::class, $object->setTransition(null));
-        $this->assertNull($object->getTransition());
+        self::assertNull($object->getTransition());
+        self::assertInstanceOf(Slide::class, $object->setTransition());
+        self::assertNull($object->getTransition());
+        self::assertInstanceOf(Slide::class, $object->setTransition($oTransition));
+        self::assertInstanceOf(Transition::class, $object->getTransition());
+        self::assertInstanceOf(Slide::class, $object->setTransition(null));
+        self::assertNull($object->getTransition());
     }
 
     public function testVisible(): void
     {
         $object = new Slide();
-        $this->assertTrue($object->isVisible());
-        $this->assertInstanceOf(Slide::class, $object->setIsVisible(false));
-        $this->assertFalse($object->isVisible());
-        $this->assertInstanceOf(Slide::class, $object->setIsVisible());
-        $this->assertTrue($object->isVisible());
+        self::assertTrue($object->isVisible());
+        self::assertInstanceOf(Slide::class, $object->setIsVisible(false));
+        self::assertFalse($object->isVisible());
+        self::assertInstanceOf(Slide::class, $object->setIsVisible());
+        self::assertTrue($object->isVisible());
+    }
+
+    public function testAddShape(): void
+    {
+        $slide = new Slide();
+        self::assertInstanceOf(ShapeContainerInterface::class, $slide);
+        $shape = new File();
+
+        self::assertIsArray($slide->getShapeCollection());
+        self::assertCount(0, $slide->getShapeCollection());
+
+        $slide->addShape($shape);
+        self::assertInstanceOf(File::class, $shape);
+        self::assertEquals($slide, $shape->getContainer());
+        self::assertInstanceOf(Slide::class, $shape->getContainer());
+
+        self::assertIsArray($slide->getShapeCollection());
+        self::assertCount(1, $slide->getShapeCollection());
+        self::assertEquals([$shape], $slide->getShapeCollection());
+    }
+
+    public function testCreateDrawingShape(): void
+    {
+        $slide = new Slide();
+
+        self::assertIsArray($slide->getShapeCollection());
+        self::assertCount(0, $slide->getShapeCollection());
+
+        $shape = $slide->createDrawingShape();
+        self::assertInstanceOf(File::class, $shape);
+        self::assertEquals($slide, $shape->getContainer());
+        self::assertInstanceOf(Slide::class, $shape->getContainer());
+
+        self::assertIsArray($slide->getShapeCollection());
+        self::assertCount(1, $slide->getShapeCollection());
+        self::assertEquals([$shape], $slide->getShapeCollection());
     }
 }
